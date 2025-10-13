@@ -148,7 +148,7 @@ export default function Project3() {
             <h1 className="title">Plant Disease Detection — CNN powered</h1>
             <p className="lead">
               An end-to-end deep learning pipeline that classifies plant leaf images into disease categories.
-              Trained using TensorFlow/Keras and deployed as a lightweight Django app (REST + inference endpoint).
+              Trained using TensorFlow/Keras and deployed as a lightweight Django app.
             </p>
 
             <div className="metrics" aria-hidden="true">
@@ -161,7 +161,7 @@ export default function Project3() {
                 <div className="lbl">Mean F1 (per class)</div>
               </div>
               <div className={`metric ${mounted ? "visible" : ""}`} style={{ transitionDelay: "320ms" }}>
-                <div className="num">50k+</div>
+                <div className="num">1.5k+</div>
                 <div className="lbl">Augmented samples</div>
               </div>
             </div>
@@ -169,12 +169,13 @@ export default function Project3() {
             <div className="section">
               <h3>Dataset & preprocessing</h3>
               <p>
-                Collected labeled leaf images from public datasets and field photos. Key steps:
+                •	Collect datasets from  public repositories. Capture real-time images using  High quality cameras.
+ Key steps:
               </p>
               <ul>
-                <li>Clean labels & remove near-duplicates.</li>
-                <li>Resize and standardize (224×224) images, normalize per-channel.</li>
-                <li>Augmentation: random flip, rotation, brightness jitter, random crop, and color jitter to increase model robustness.</li>
+                <li>Resize images for CNN input.</li>
+                <li>Normalize pixel values to improve model training.</li>
+                <li>Augmentation: random flip, rotation, random crop, and contrast enhancement to increase model robustness.</li>
               </ul>
             </div>
 
@@ -186,7 +187,7 @@ export default function Project3() {
               </p>
               <ul>
                 <li>Pretrained backbone (transfer learning) then fine-tuned on leaf data.</li>
-                <li>Cross-entropy loss, AdamW optimizer, cosine learning-rate schedule with warmup.</li>
+                <li>Cross-entropy loss, Adam optimizer, ReduceLROnPlateau learning-rate schedule with warmup.</li>
                 <li>Early stopping on validation loss and model checkpointing.</li>
               </ul>
             </div>
@@ -196,7 +197,7 @@ export default function Project3() {
               <ul>
                 <li>Split: train / val / test with stratified sampling to preserve class distribution.</li>
                 <li>Monitored accuracy, precision, recall, F1, and confusion matrices — saved visual artifacts (see screenshots).</li>
-                <li>Exported the final model as a TF SavedModel and converted a smaller TFLite for mobile demos.</li>
+                <li>Exported the final model as a TF SavedModel.</li>
               </ul>
             </div>
 
@@ -248,27 +249,18 @@ export default function Project3() {
             </div>
 
             <div className="section">
-              <h3>Deployment (Django)</h3>
+              <h3>Web Application Development</h3>
               <p>
-                The inference service runs behind a Django REST endpoint:
+                The inference service runs behind a Django:
               </p>
               <ol>
-                <li>Upload endpoint accepts image, performs server-side preprocessing, and runs model.predict().</li>
-                <li>Responses include predicted class, confidence score, and top-k alternatives.</li>
-                <li>Model files stored on the server (or object storage) and loaded once per worker for efficiency.</li>
+                <li>Build a Django-based web interface for disease detection.</li>
+                <li>Allow users to upload images and receive real-time results.</li>
+                <li>Display disease classification with possible treatment suggestions.</li>
               </ol>
               <p style={{ marginTop: 8 }}>
-                For production I recommend containerizing the model server separately (e.g., small FastAPI/TorchServe) and using Django as the frontend + auth layer.
+                Through data collection, preprocessing, model training, and deployment, the project achieves accurate disease detection, helping farmers and agricultural experts identify plant health issues early.
               </p>
-            </div>
-
-            <div className="section" style={{ marginTop: 14 }}>
-              <h3>Results & artifacts</h3>
-              <ul>
-                <li>Training curves, confusion matrix and per-class metrics (see images).</li>
-                <li>Saved model (SavedModel) + TFLite conversion for mobile deployment.</li>
-                <li>Demo page for image upload + predicted label and confidence.</li>
-              </ul>
             </div>
           </div>
 
@@ -302,14 +294,14 @@ export default function Project3() {
                   <div className="badge">🚀</div>
                   <div>
                     <div style={{ fontWeight: 800 }}>Deploy</div>
-                    <div style={{ color: "#6b7280", fontSize: 13 }}>Django + static demo</div>
+                    <div style={{ color: "#6b7280", fontSize: 13 }}>Django</div>
                   </div>
                 </div>
               </div>
 
               <div style={{ marginTop: 12 }}>
                 <a className="btn" href="/Dataset.zip" target="_blank" rel="noreferrer">Download Dataset</a>
-                <a className="btn" href="https://github.com/" target="_blank" rel="noreferrer" style={{ marginLeft: 8 }}>View Repo</a>
+                <a className="btn" href="https://github.com/Kayalvizhi2004/Plant-Disease-Detection" target="_blank" rel="noreferrer" style={{ marginLeft: 8 }}>View Repo</a>
               </div>
             </div>
           </aside>

@@ -271,7 +271,7 @@ export default function Project4() {
 
               <div className="cta-row">
                 <a className="btn" href="#demo" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 900, behavior: "smooth" }); }}>Live Demo</a>
-                <a className="btn" href="https://github.com/" target="_blank" rel="noreferrer">View Repo</a>
+                <a className="btn" href="https://github.com/Kayalvizhi2004/Typing-Speed-Game" target="_blank" rel="noreferrer">View Repo</a>
               </div>
             </div>
           </aside>

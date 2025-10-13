@@ -7,7 +7,7 @@ const items = [
     title: "Portfolio Website",
     desc: "Personal portfolio built with React. Showcases projects and contact form.",
     route: "/project1",
-    tech: ["React", "CSS", "Router"],
+    tech: ["React", "CSS", "HTML"],
     img: "/images/logo-1.jpeg",
   },
   {
