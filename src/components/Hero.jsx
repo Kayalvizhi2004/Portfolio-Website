@@ -130,9 +130,9 @@ export default function Hero() {
         .hamburger { width:22px; height:14px; position:relative; display:inline-block; cursor:pointer; color: var(--text-dark); }
         .dark .hamburger { color: var(--text-light); }
         .hamburger span { position:absolute; left:0; right:0; height:2px; background: currentColor; border-radius:6px; transition: transform .28s, opacity .18s ease; }
-        .hamburger span:nth-child(1){ top:0 }
-        .hamburger span:nth-child(2){ top:6px }
-        .hamburger span:nth-child(3){ top:12px }
+        .hamburger span:nth-child(1){ top:60px }
+        .hamburger span:nth-child(2){ top:66px }
+        .hamburger span:nth-child(3){ top:72px }
         .hamburger.open span:nth-child(1){ transform: translateY(6px) rotate(45deg) }
         .hamburger.open span:nth-child(2){ opacity:0 }
         .hamburger.open span:nth-child(3){ transform: translateY(-6px) rotate(-45deg) }
