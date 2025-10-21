@@ -73,7 +73,7 @@ export default function Project2() {
   return (
     <main style={{ padding: "28px 20px", maxWidth: 1200, margin: "0 auto" }}>
       <style>{`
-        :root { --accent1:#00f2fe; --accent2:#a933d8; }
+        :root { --accent1:#00f2fe; --accent2:#e00dacff; }
 
         .wrap { opacity:0; transform: translateY(18px); transition: all 520ms cubic-bezier(.2,.9,.3,1); }
         .wrap.mounted { opacity:1; transform: translateY(0); }

@@ -62,7 +62,7 @@ export default function Project1() {
       <style>{`
         :root {
           --accent1: #00f2fe;
-          --accent2: #a933d8;
+          --accent2: #e00dacff;
           --glass: rgba(255,255,255,0.7);
         }
 

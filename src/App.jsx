@@ -34,4 +34,46 @@ function App() {
   );
 }
 
+import React from "react";
+import Home from "./components/Hero";
+import About from "./components/About";
+import Projects from "./components/Projects";
+import Certifications from "./components/Certifications";
+import Contact from "./components/Contact";
+import "./App.css";
+
+function App() {
+  return (
+    <div className="app-container">
+      <section id="hero">
+        <Home />
+      </section>
+      <section id="about">
+        <About />
+      </section>
+      <section id="projects">
+        <Projects />
+      </section>
+      <section id="project1">
+        <Project1 />
+      </section>
+      <section id="project2">
+        <Project2 />
+      </section>
+      <section id="project3">
+        <Project3 />
+      </section>
+      <section id="project4">
+        <Project4 />
+      </section>
+      <section id="certifications">
+        <Certifications />
+      </section>
+      <section id="contact">
+        <Contact />
+      </section>
+    </div>
+  );
+}
+
 export default App;
