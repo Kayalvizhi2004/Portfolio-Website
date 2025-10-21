@@ -79,6 +79,9 @@ export default function About() {
           border: 1px solid rgba(0,0,0,0.1);
           transition: all 0.3s ease;
         }
+        .about-page{
+           min-height:750px;
+           }
 
         h2.about-heading {
           text-align: center;
