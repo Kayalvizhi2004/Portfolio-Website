@@ -1,6 +1,6 @@
 // src/components/Certifications.jsx
-import React, { useEffect, useRef, useState } from "react";
-import { FiSun, FiMoon } from "react-icons/fi";
+import React, { useEffect, useRef, useState, useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 function Certifications() {
   const initialItems = [
@@ -27,19 +27,8 @@ function Certifications() {
   const [lightbox, setLightbox] = useState({ open: false, src: "", alt: "" });
   const containerRef = useRef(null);
 
-  // theme: initialize from localStorage / prefers-color-scheme
-  const getInitialTheme = () => {
-    const saved = localStorage.getItem("certTheme");
-    if (saved === "light" || saved === "dark") return saved;
-    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) return "light";
-    return "dark";
-  };
-  const [theme, setTheme] = useState(getInitialTheme);
-
-  useEffect(() => {
-    localStorage.setItem("certTheme", theme);
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
+  // theme is provided globally by ThemeContext
+  const { theme } = useContext(ThemeContext);
 
   // intersection observer to animate in
   useEffect(() => {
@@ -75,35 +64,7 @@ function Certifications() {
 
   return (
     <div>
-      {/* Theme toggle using same style as Contact page (Sun shows in light mode, Moon in dark mode) */}
-      <button
-        onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-        aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-        title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-        style={{
-          position: "fixed",
-          top: 60,
-          right: 16,
-          width: 44,
-          height: 44,
-          display: "grid",
-          placeItems: "center",
-          borderRadius: "50%",
-          cursor: "pointer",
-          zIndex: 1000,
-          fontSize: 20,
-          background: theme === "dark" ? "#071124" : "#fff",
-          color: theme === "dark" ? "#ffd86b" : "#ff7a7a",
-          boxShadow: theme === "dark"
-            ? "0 6px 20px rgba(0,0,0,0.6), inset 0 0 16px rgba(255,215,100,0.06)"
-            : "0 6px 20px rgba(20,30,60,0.08), inset 0 0 12px rgba(255,125,125,0.04)",
-          border: "none",
-          transition: "transform 180ms, box-shadow 300ms, color 300ms",
-        }}
-      >
-        {/* show Sun for light mode, Moon for dark mode (matching contact page behavior) */}
-        {theme === "light" ? <FiSun size={20} /> : <FiMoon size={20} />}
-      </button>
+      {/* Theme is controlled globally from the navbar */}
 
       <section id="certifications" ref={containerRef} style={{ padding: "20px 16px", background: "var(--bg)" }}>
         <style>{`
@@ -138,7 +99,7 @@ function Certifications() {
           /* Glowing heading (uses the exact text-shadow + animation you asked for) */
           h2.cert-heading {
             margin: 8px 0 6px;
-            font-size: 28px;
+            font-size: 2rem;
             text-align: center;
             color: var(--text-title);
             text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color), 0 0 30px var(--glow-color);
@@ -270,7 +231,7 @@ function Certifications() {
           @media (max-width: 480px) {
             .card { height: 160px; }
             .grid { gap: 15px; }
-            h2.cert-heading { font-size: 22px; }
+            h2.cert-heading { font-size: 2rem; }
           }
 
           /* Glow keyframes */

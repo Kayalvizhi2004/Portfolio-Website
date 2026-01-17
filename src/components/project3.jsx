@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 export default function Project3() {
   const [mounted, setMounted] = useState(false);
@@ -38,6 +39,10 @@ export default function Project3() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightboxOpen]);
 
+  useEffect(() => {
+  window.scrollTo(0, 0);
+}, []);
+
   function startAutoplay() {
     stopAutoplay();
     autoplayRef.current = setInterval(() => {
@@ -72,8 +77,12 @@ export default function Project3() {
     if (!mq || !mq.matches) startAutoplay();
   }
 
+  const { theme } = useContext(ThemeContext);
+
+  const mainStyle = { padding: "28px 20px", maxWidth: 1200, margin: "0 auto", background: theme === "dark" ? "#000" : "transparent" };
+
   return (
-    <main style={{ padding: "28px 20px", maxWidth: 1200, margin: "0 auto" }}>
+    <main style={mainStyle}>
       <style>{`
         :root { --accent1: #00f2fe; --accent2: #e00dacff; }
 
@@ -85,7 +94,7 @@ export default function Project3() {
         .hero { display:grid; grid-template-columns: 1fr 380px; gap:24px; align-items:start; }
         @media (max-width:1000px) { .hero { grid-template-columns: 1fr; } }
 
-        .title { font-size:1.6rem; margin:0 0 8px; color:#0b1220; }
+        .title { font-size:2rem; margin:0 0 8px; color:#0b1220; }
         .lead { color:#475569; margin:0 0 12px; line-height:1.6; }
 
         .panel { background: linear-gradient(180deg,#fff,#fbfdff); border-radius:12px; padding:14px; box-shadow:0 16px 44px rgba(12,18,30,0.06); border:1px solid rgba(12,18,30,0.03); }
@@ -101,6 +110,10 @@ export default function Project3() {
         .metric .num { font-weight:800; font-size:1.05rem; color:#0b1220; }
         .metric .lbl { color:#6b7280; font-size:0.9rem; }
 
+        .wrap.dark .metric { background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+        .wrap.dark .metric .num { color: #ffffff !important; font-weight:900; font-size:1.08rem; text-shadow: 0 2px 6px rgba(0,0,0,0.6) !important; }
+        .wrap.dark .metric .label { color: #cbd5e1 !important; font-weight:600 !important; }
+
         /* carousel */
         .carousel { margin-top:14px; border-radius:10px; overflow:hidden; position:relative; }
         .viewport { height:340px; display:flex; align-items:center; justify-content:center; background:linear-gradient(180deg,#eef6ff,#faf8fb); position:relative; }
@@ -112,22 +125,107 @@ export default function Project3() {
         }
         .shot.active { transform: scale(1) translateY(0); opacity:1; filter:none; }
 
+        /* Dark mode: black background and clearer text */
+        .wrap.dark { background: #000; color: #eaf6ff; }
+        .wrap.dark .title, .wrap.dark .lead, .wrap.dark .metric .num, .wrap.dark .chip { color: #eaf6ff; }
+        .wrap.dark .panel { background: linear-gradient(180deg,#050506,#07070a); border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 28px 88px rgba(0,0,0,0.72); }
+        .wrap.dark .btn { background: linear-gradient(90deg,#00f2fe,#e00dacff); color:#07101a; box-shadow: 0 12px 40px rgba(0,242,254,0.12); }
+        .wrap.dark .viewport { background: linear-gradient(180deg,#040611,#061018); }
+        /* Force readable chips/labels in dark mode */
+        .wrap.dark .chip { background: rgba(255,255,255,0.03); color: #eaf6ff !important; }
+        .wrap.dark .metric .label { color: #cbd5e1 !important; }
+        .wrap.dark .metric .num { color: #e6fbff !important; }
+        .wrap.dark .meta-list div, .wrap.dark .meta-list .meta-item div div { color: #cbd5e1 !important; }
+
         .carousel-controls { position:absolute; right:12px; bottom:12px; display:flex; gap:8px; }
         .ctrl { background: rgba(255,255,255,0.9); border-radius:999px; padding:8px; cursor:pointer; box-shadow:0 8px 18px rgba(8,12,20,0.06); }
+               .wrap.dark .ctrl {
+  background: linear-gradient(180deg, #1a1a1a, #0a0a0a);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.8);
+}
+
+/* Optional: subtle hover for better visibility */
+.wrap.dark .ctrl:hover {
+  background: linear-gradient(180deg, #222222, #0f0f0f);
+}
+        
         .thumbs { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
         .thumb { width:96px; height:64px; object-fit:cover; border-radius:6px; cursor:pointer; opacity:0.76; border:2px solid transparent; transition: transform 220ms ease, opacity 220ms ease, border-color 220ms ease; }
         .thumb:hover { transform: translateY(-4px); opacity:0.95; }
         .thumb.active { opacity:1; border-color: rgba(0,0,0,0.06); box-shadow:0 10px 26px rgba(0,0,0,0.06); }
 
+
+
+/* Light mode – unchanged (inherits existing colors) */
+.section h3,
+.section p,
+.section li {
+  color: #475569;
+}
+
+/* Dark mode – paragraph & list SAME color */
+.wrap.dark .section h3,
+.wrap.dark .section p,
+.wrap.dark .section li {
+  color: #e5e7eb;        /* consistent light gray */
+}
+
+/* Bullet / number color in dark mode */
+.wrap.dark .section li::marker {
+  color: #9ca3af;
+}
+
+
+
+
         /* right column */
         .right { display:flex; flex-direction:column; gap:12px; }
         .chip { padding:8px 10px; border-radius:999px; background:#eef6fb; font-weight:700; color:#0b1220; display:inline-block; margin-right:6px; }
+         
+        .features { margin-top:12px; display:grid; gap:20px; }
+        /* Feature cards – LIGHT MODE */
+        .feature {
+            display:flex;
+            gap:10px;
+            align-items:flex-start;
+            background: linear-gradient(180deg,#ffffff,#f8fafc);
+            border-radius:10px;
+            padding:10px;
+            box-shadow: 0 10px 28px rgba(8,12,20,0.06);
+            transform: translateY(6px);
+            opacity:0;
+            transition: all 420ms ease;
+            color: #0b1220; /* dark text */
+        }
 
-        .feature { display:flex; gap:10px; align-items:flex-start; background: linear-gradient(180deg,#fff,#fbfdff); padding:10px; border-radius:10px; box-shadow:0 10px 28px rgba(8,12,20,0.04); transform: translateY(6px); opacity:0; transition: all 420ms ease; }
+/* Feature cards – DARK MODE */
+.wrap.dark .feature {
+  background: linear-gradient(180deg,#070707,#020202);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.75);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #ffffff; /* white text */
+}
+
+/* Feature title */
+.feature > div:nth-child(2) > div:first-child {
+  color: inherit;
+  font-weight: 800;
+}
+
+/* Feature description */
+.feature > div:nth-child(2) > div:last-child {
+  color: inherit;
+  opacity: 0.85;
+  font-size: 13px;
+}
+
         .feature.visible { transform: translateY(0); opacity:1; }
+        .feature {transition: background 300ms ease, color 300ms ease, box-shadow 300ms ease;}
         .badge { width:36px; height:36px; border-radius:8px; display:grid; place-items:center; color:white; background: linear-gradient(90deg,var(--accent1),var(--accent2)); font-weight:800; }
 
-        .cta { margin-top:8px; display:flex; gap:8px; }
+        .cta { margin-top:10px; display:flex; gap:8px;}
         .btn { padding:10px 12px; border-radius:10px; background: linear-gradient(90deg,var(--accent1),var(--accent2)); color:white; font-weight:800; text-decoration:none; }
 
         /* lightbox */
@@ -140,8 +238,8 @@ export default function Project3() {
         }
       `}</style>
 
-      <div className={`wrap ${mounted ? "mounted" : ""}`}>
-        <Link to="/projects" className="back">← Back to Projects</Link>
+      <div className={`wrap ${mounted ? "mounted" : ""} ${theme === "dark" ? "dark" : ""}`}>
+        <Link to="/" state={{ scrollTo: "projects" }} className="back">← Back to Projects</Link>
 
         <div className="hero">
           <div>
@@ -253,7 +351,7 @@ export default function Project3() {
               <p>
                 The inference service runs behind a Django:
               </p>
-              <ol>
+              <ol style={{ color: "#e5e7eb", lineHeight: 1.7 }}>
                 <li>Build a Django-based web interface for disease detection.</li>
                 <li>Allow users to upload images and receive real-time results.</li>
                 <li>Display disease classification with possible treatment suggestions.</li>
@@ -267,13 +365,13 @@ export default function Project3() {
           <aside className="right">
             <div className="panel">
               <strong style={{ display: "block", marginBottom: 6 }}>Quick summary</strong>
-              <div style={{ marginBottom: 8 }}>
+              <div style={{ marginTop: 12 }} >
                 <span className="chip">Django</span>
                 <span className="chip">Tensorflow/keras</span>
                 <span className="chip">OpenCV</span>
               </div>
 
-              <div style={{ marginTop: 10 }}>
+              <div className="features">
                 <div className={`feature ${mounted ? "visible" : ""}`} style={{ transitionDelay: "120ms" }}>
                   <div className="badge">🧠</div>
                   <div>
@@ -299,7 +397,7 @@ export default function Project3() {
                 </div>
               </div>
 
-              <div style={{ marginTop: 12 }}>
+              <div style={{ marginTop: 25, marginBottom: 10 }}>
                 <a className="btn" href="/Dataset.zip" target="_blank" rel="noreferrer">Download Dataset</a>
                 <a className="btn" href="https://github.com/Kayalvizhi2004/Plant-Disease-Detection" target="_blank" rel="noreferrer" style={{ marginLeft: 8 }}>View Repo</a>
               </div>

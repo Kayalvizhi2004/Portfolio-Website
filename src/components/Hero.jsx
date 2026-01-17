@@ -1,259 +1,382 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { ThemeContext } from "../contexts/ThemeContext";
+import { motion } from "framer-motion";
 
 export default function Hero() {
-  const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext);
 
   const roles = [
-    { title: "Python Developer" },
-    { title: "Data Analyst" },
-    { title: "ML / Automation" },
+    "Python Developer",
+    "Data Analyst",
+    "ML Enthusiastic",
+    "Web Developer",
   ];
 
-  const [index, setIndex] = useState(0);
-  const [visible, setVisible] = useState(true);
-  const [navOpen, setNavOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(() => {
-    try {
-      return localStorage.getItem("hero-theme") === "dark";
-    } catch {
-      return false;
-    }
-  });
+  const taglines = [
+    "Turning Complexity into Clarity",
+    "From Concepts to Code",
+    "Learning. Building. Improving.",
+    "Turning Ideas into Working Software",
+    "Focused on Clean, Practical Code",
+    "Growing Through Real-World Projects"
+  ];
 
-  // Cycle roles
-  const prefersReducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  const [roleIndex, setRoleIndex] = useState(0);
+  const [roleVisible, setRoleVisible] = useState(true);
+
+  const [text, setText] = useState("");
+  const [tagIndex, setTagIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(0);
+  const [deleting, setDeleting] = useState(false);
+
+  /* 🔹 Role rotation */
   useEffect(() => {
-    if (prefersReducedMotion) return;
-    const displayMs = 2600;
-    const fadeMs = 420;
-    const total = displayMs + fadeMs;
-
     const interval = setInterval(() => {
-      setVisible(false);
+      setRoleVisible(false);
       setTimeout(() => {
-        setIndex((i) => (i + 1) % roles.length);
-        setVisible(true);
-      }, fadeMs);
-    }, total);
-
+        setRoleIndex((i) => (i + 1) % roles.length);
+        setRoleVisible(true);
+      }, 400);
+    }, 2600);
     return () => clearInterval(interval);
-  }, [roles.length, prefersReducedMotion]);
-
-  // Close drawer on Esc
-  useEffect(() => {
-    function onKey(e) {
-      if (e.key === "Escape") setNavOpen(false);
-    }
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Persist theme in localStorage
+  /* 🔹 Typewriter */
   useEffect(() => {
-    try {
-      localStorage.setItem("hero-theme", darkMode ? "dark" : "light");
-    } catch {}
-    // Apply theme to body
-    document.body.style.background = darkMode ? "#0b1220" : "#ffffff";
-    document.body.style.color = darkMode ? "#ffffff" : "#0b1220";
-  }, [darkMode]);
+    const current = taglines[tagIndex];
+    const speed = deleting ? 40 : 70;
+
+    const timer = setTimeout(() => {
+      if (!deleting && charIndex < current.length) {
+        setText(current.slice(0, charIndex + 1));
+        setCharIndex(charIndex + 1);
+      } else if (deleting && charIndex > 0) {
+        setText(current.slice(0, charIndex - 1));
+        setCharIndex(charIndex - 1);
+      } else if (!deleting && charIndex === current.length) {
+        setTimeout(() => setDeleting(true), 1200);
+      } else if (deleting && charIndex === 0) {
+        setDeleting(false);
+        setTagIndex((i) => (i + 1) % taglines.length);
+      }
+    }, speed);
+
+    return () => clearTimeout(timer);
+  }, [charIndex, deleting, tagIndex]);
 
   return (
-    <section className={`hero-root ${darkMode ? "dark" : ""}`} aria-label="Hero region">
+    <section
+  id="home"
+  className={`hero-root ${theme === "dark" ? "dark" : ""}`}
+>
+
+      
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@500;600&family=Poppins:wght@700;800&display=swap');
+
         :root {
-          --bg-white: #ffffff;
-          --text-dark: #0b1220;
-          --text-light: #ffffff;
-          --muted: rgba(11,18,32,0.7);
-          --accent: #00f2fe;
-          --accent2: #e00dacff;
+          --accent1: #00f2fe;
+          --accent2: #e00dac;
+          --dark: #0b1220;
+          --white: #ffffff;
+          --text-light: #0b1220;
+          --text-dark: #e5e7eb;
         }
 
         .hero-root {
-          background: var(--bg-white);
-          color: var(--text-dark);
-          font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
           min-height: 100vh;
+          padding-top: 120px;
+          background: var(--white);
+          color: var(--text-light);
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: flex-start;
-          padding-top: 100px;
-          transition: background .3s ease, color .3s ease;
+          font-family: "Inter", system-ui, sans-serif;
+          --name-accent: var(--accent2);
         }
 
-        .dark { background: var(--text-dark); color: var(--text-light); }
+        .dark {
+          background: var(--dark);
+          color: var(--text-dark);
+          --name-accent: var(--accent1);
+        }
 
-        /* Theme toggle button */
-        .theme-toggle {
-          position: fixed;
-          top: 60px;
-          right: 16px;
-          z-index: 130;
-          width: 50px;
-          height: 50px;
+       /* 🔹 TAGLINE (FIXED FOR LIGHT & DARK MODE) */
+.tagline {
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin-bottom: 45px;
+  min-height: 2em;
+
+  /* ✅ Explicit colors */
+  color: #0b1220; /* visible in light mode */
+}
+
+.dark .tagline {
+  color: #e5e7eb; /* visible in dark mode */
+}
+
+/* 🔹 CURSOR */
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  margin-left: 4px;
+  background: currentColor;
+  animation: blink 1s infinite;
+}
+
+
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* 🔹 PROFILE (FIXED IMAGE, ROTATING BORDER) */
+        .profile-wrap {
+          position: relative;
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+          margin-bottom: 18px;
           display: flex;
           align-items: center;
           justify-content: center;
+        }
+
+        .profile-wrap::before {
+          content: "";
+          position: absolute;
+          inset: -4px;
           border-radius: 50%;
-          cursor: pointer;
+          background: conic-gradient(
+            from 0deg,
+            var(--accent1),
+            var(--accent2),
+            var(--accent1)
+          );
+          animation: rotateBorder 6s linear infinite;
+          z-index: 0;
+        }
+
+        @keyframes rotateBorder {
+          to { transform: rotate(360deg); }
+        }
+
+        .profile-photo {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+          background: black;
+          position: relative;
+          z-index: 1;
+        }
+
+        /* 🔹 NAME */
+        .name {
+          font-family: "Poppins", sans-serif;
+          font-size: 3.5rem;
+          font-weight: 800;
+          background: linear-gradient(
+            90deg,
+            var(--name-accent),
+            #ffffff,
+            var(--name-accent)
+          );
+          background-size: 200% auto;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          animation: shimmer 3s linear infinite;
+          margin-top: 8px;
+        }
+
+        @keyframes shimmer {
+          to { background-position: 200%; }
+        }
+
+        /* 🔹 ROLES */
+        .role-wrap {
+          position: relative;
+          height: 1.8em;
+          margin-top: 6px;
+          font-family: "Montserrat", sans-serif;
+        }
+
+        .role {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
           font-size: 1.5rem;
-          background: rgba(255,255,255,0.88);
-          border: 1px solid rgba(0,0,0,0.1);
-          transition: all 0.3s ease;
+          font-weight: 600;
+          color: var(--accent1);
+          opacity: 0;
+          transition: opacity 0.4s ease;
+          text-align:center;
         }
-        .dark .theme-toggle { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.3); color: #fff; }
 
-        /* Topbar */
-        .topbar {
-          position: fixed;
-          top:0; left:0; right:0;
-          height:50px;
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          padding:4px 16px;
-          z-index:120;
-          background: rgba(255,255,255,0.9);
-          backdrop-filter: blur(6px);
-          transition: background .3s ease;
+        .role.visible { opacity: 1; }
+
+       /* 🔹 DESCRIPTION (FIXED FOR LIGHT & DARK MODE) */
+.hero-sub {
+  max-width: 680px;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin: 52px auto;
+  opacity: 0.95;
+  text-align:justify;
+
+  /* ✅ Explicit light-mode color */
+  color: #1f2937; /* slate-800 */
+}
+
+.dark .hero-sub {
+  color: #e5e7eb; /* slate-200 */
+}
+
+
+        /* 🔹 BUTTONS */
+        .hero-cta {
+          display: flex;
+          gap: 14px;
+          margin-top: 10px;
+          flex-wrap: wrap;
         }
-        .dark .topbar { background: rgba(11,18,32,0.9); }
 
-        /* Hamburger */
-        .hamburger { width:22px; height:14px; position:relative; display:inline-block; cursor:pointer; color: var(--text-dark); }
-        .dark .hamburger { color: var(--text-light); }
-        .hamburger span { position:absolute; left:0; right:0; height:2px; background: currentColor; border-radius:6px; transition: transform .28s, opacity .18s ease; }
-        .hamburger span:nth-child(1){ top:60px }
-        .hamburger span:nth-child(2){ top:66px }
-        .hamburger span:nth-child(3){ top:72px }
-        .hamburger.open span:nth-child(1){ transform: translateY(6px) rotate(45deg) }
-        .hamburger.open span:nth-child(2){ opacity:0 }
-        .hamburger.open span:nth-child(3){ transform: translateY(-6px) rotate(-45deg) }
-
-        /* Drawer */
-        .drawer { position: fixed; top:0; left:0; bottom:0; width:80%; max-width:320px; background: var(--bg-white); transform: translateX(-120%); transition: transform .42s; z-index:105; padding:18px; }
-        .dark .drawer { background: var(--text-dark); color: var(--text-light); }
-        .drawer.open { transform: translateX(0); }
-        .drawer nav a { display:block; padding:12px 10px; margin-bottom:6px; color:var(--text-dark); text-decoration:none; border-radius:8px; transition: background .14s; }
-        .dark .drawer nav a { color: var(--text-light); }
-        .drawer nav a:hover { background: rgba(0,0,0,0.03) }
-
-        .backdrop { position:fixed; inset:0; background: rgba(11,18,32,0.12); opacity:0; pointer-events:none; transition: opacity .28s ease; z-index:100; }
-        .backdrop.show { opacity:1; pointer-events:auto; }
-
-        /* Profile photo */
-        .profile-wrap {
-          width:200px; height:200px; border-radius:999px;
-          display:grid; place-items:center;
-          margin-bottom:24px;
-          transition: box-shadow .4s ease;
+        .btn {
+          padding: 12px 22px;
+          border-radius: 14px;
+          background: linear-gradient(90deg, var(--accent1), var(--accent2));
+          border: none;
+          font-weight: 700;
+          font-size: 0.95rem;
+          color: white;
+          cursor: pointer;
+          transition: all 0.25s ease;
         }
-        .profile-wrap:hover { box-shadow: 0 24px 80px rgba(0,242,254,0.2); }
-        .profile-photo { width:190px; height:190px; border-radius:999px; object-fit:cover; }
 
-        /* Text content */
-        .eyebrow { font-weight:700; font-size:2rem; color:var(--accent); text-align:center; margin:0 0 8px; }
-        .hero-title { font-weight:900; font-size:3rem; text-align:center; margin:0; }
-        .role-wrap { margin-top:8px; height:1.5em; position:relative; text-align:center; }
-        .role { position:absolute; left:50%; transform:translateX(-50%); top:0; font-weight:700; font-size:1.6rem; color: var(--accent); opacity:0; transition: opacity 420ms ease, text-shadow 420ms ease; white-space:nowrap; }
-        .role.visible { opacity:1; text-shadow: 0 8px 28px rgba(0,242,254,0.10), 0 0 40px rgba(170,8,97,0.06); }
-
-        .hero-sub { max-width:600px; text-align:center; font-size:1rem; line-height:1.5; margin:16px auto; color:var(--muted); }
-        .dark .hero-sub { color: #ddd; }
-
-        .hero-cta { display:flex; gap:12px; justify-content:center; margin-top:16px; flex-wrap:wrap; }
-        .btn { padding:10px 18px; border-radius:12px; font-weight:800; cursor:pointer; border:0; background: linear-gradient(90deg,var(--accent),var(--accent2)); color: white; transition: all 0.2s ease; }
-        .btn.secondary { background: linear-gradient(90deg,var(--accent),var(--accent2)); color:white; }
-
-        /* Social links */
-        .hero-social { display:flex; gap:24px; justify-content:center; margin-top:32px; }
-        .social-link { width:56px; height:56px; display:grid; place-items:center; border-radius:12px; background: rgba(2,6,23,0.02); color:var(--accent); transition: transform .18s, box-shadow .18s; }
-        .social-link:hover { transform: translateY(-6px); box-shadow:0 16px 40px rgba(0,242,254,0.06); color:white; }
-
-        @media(min-width:900px){
-          .hero-root { padding-top:140px; }
-          .hero-inner { display:flex; flex-direction:column; align-items:center; }
+        .btn:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 0 35px rgba(0,242,254,0.55);
         }
+
+        /* 🔹 SOCIAL ICONS */
+        .hero-social {
+          display: flex;
+          gap: 24px;
+          margin-top: 34px;
+        }
+
+       /* 🔹 SOCIAL ICON WRAPPER */
+.social-link {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 2px solid var(--accent1);
+  display: grid;
+  place-items: center;
+  transition: all 0.3s ease;
+  background: transparent;
+}
+
+/* 🔹 ICON COLOR (DEFAULT) */
+.social-link svg {
+  width: 26px;
+  height: 26px;
+  fill: var(--accent1);
+  transition: fill 0.3s ease;
+}
+
+/* 🔹 LIGHT MODE HOVER */
+.hero-root:not(.dark) .social-link:hover {
+  background: rgba(0, 242, 254, 0.15);
+  box-shadow: 0 0 30px rgba(0, 242, 254, 0.4);
+}
+
+.hero-root:not(.dark) .social-link:hover svg {
+  fill: #000000; /* ✅ BLACK ICON IN LIGHT MODE */
+}
+
+/* 🔹 DARK MODE (KEEP AS IS) */
+.dark .social-link:hover {
+  box-shadow: 0 0 30px rgba(0, 242, 254, 0.7);
+}
+
+.dark .social-link:hover svg {
+  fill: var(--accent1); /* unchanged */
+}
+
       `}</style>
 
-      {/* Hamburger */}
-      <header className="topbar">
-        <button
-          className={`hamburger ${navOpen ? "open" : ""}`}
-          aria-label="Menu"
-          onClick={() => setNavOpen((s) => !s)}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-      </header>
+      {/* 🔹 TAGLINE */}
+      <p className="tagline">
+        {text}
+        <span className="cursor" />
+      </p>
 
-      {/* Theme toggle */}
-      <button
-        className="theme-toggle"
-        aria-label={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-        title={darkMode ? "Switch to light mode" : "Switch to dark mode"}
-        onClick={() => setDarkMode(!darkMode)}
-      >
-        {darkMode ? "☀️" : "🌙"}
-      </button>
-
-      {/* Drawer */}
-      <div className={`drawer ${navOpen ? "open" : ""}`}>
-        <strong style={{display:"block", marginBottom:12}}>Menu</strong>
-        <nav>
-          <a href="#home" onClick={()=>setNavOpen(false)}>Home</a>
-          <a href="#projects" onClick={()=>setNavOpen(false)}>Projects</a>
-          <a href="#about" onClick={()=>setNavOpen(false)}>About</a>
-          <a href="#contact" onClick={()=>setNavOpen(false)}>Contact</a>
-        </nav>
-      </div>
-      <div className={`backdrop ${navOpen ? "show" : ""}`} onClick={()=>setNavOpen(false)}/>
-
-      {/* Profile */}
+      {/* 🔹 PROFILE */}
       <div className="profile-wrap">
-        <img src="/images/profile.jpg" alt="Kayalvizhi profile" className="profile-photo"/>
+        <img src="/images/profile.jpg" alt="Kayalvizhi" className="profile-photo" />
       </div>
 
-      {/* Name & roles */}
-      <p className="eyebrow">Hi, my name is</p>
-      <h1 className="hero-title">Kayalvizhi</h1>
-      <div className="role-wrap" aria-live="polite" aria-atomic="true">
-        {roles.map((r,i)=>(
-          <span key={r.title} className={`role ${i===index&&visible?"visible":""}`}>{r.title}</span>
+      {/* 🔹 NAME */}
+      <h1 className="name">Kayalvizhi</h1>
+
+      {/* 🔹 ROLES */}
+      <div className="role-wrap">
+        {roles.map((role, i) => (
+          <span
+            key={role}
+            className={`role ${i === roleIndex && roleVisible ? "visible" : ""}`}
+          >
+            {role}
+          </span>
         ))}
       </div>
 
-      {/* Description */}
+      {/* 🔹 DESCRIPTION */}
       <p className="hero-sub">
-        I build efficient backend solutions, automate workflows, and implement data pipelines using Python (Pandas, NumPy) and frameworks like Flask/Django.
-        I analyze and interpret datasets to uncover insights and drive data-led decisions. Skilled in SQL, Python, Excel, Power BI, and Tableau.
+        Hi, I’m Kayalvizhi Neelanarayanan, a passionate Python developer with a keen interest in Data Analytics, Machine Learning, and Web Development. I enjoy turning complex problems into efficient and elegant solutions using Python and modern technologies. I’m constantly exploring new tools and frameworks to build projects that are both functional and impactful. Welcome to my portfolio — feel free to explore my work and see what I can create!
       </p>
 
-      {/* Buttons */}
+      {/* 🔹 BUTTONS */}
       <div className="hero-cta">
-        <button className="btn glow" onClick={()=>navigate("/projects")}>View Projects</button>
-        <a className="btn secondary" href="/resume.pdf" target="_blank" rel="noreferrer">Download CV</a>
+        <button
+  className="btn"
+  onClick={() => {
+    document.getElementById("projects")?.scrollIntoView({
+      behavior: "smooth",
+    });
+  }}
+>
+  View Projects
+</button>
+
+        <a href="/resume.pdf" target="_blank" rel="noreferrer" className="btn">
+          Download CV
+        </a>
       </div>
 
-      {/* Social icons */}
+      {/* 🔹 SOCIALS */}
       <div className="hero-social">
-        <a className="social-link" href="https://github.com/Kayalvizhi2004" target="_blank" rel="noreferrer">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 .5C5.73.5.75 5.48.75 11.77c0 4.94 3.2 9.13 7.64 10.61.56.1.76-.24.76-.53 0-.26-.01-1.12-.02-2.02-3.11.68-3.77-1.5-3.77-1.5-.51-1.3-1.25-1.64-1.25-1.64-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 .17 1.56.98 1.56.98.9 1.54 2.36 1.1 2.93.84.09-.66.35-1.36.64-1.64-2.48-.28-5.09-1.24-5.09-5.53 0-1.22.44-2.21 1.16-2.99-.12-.28-.5-1.42.11-2.95 0 0 .95-.3 3.12 1.15a10.8 10.8 0 0 1 2.84-.38c.96.01 1.93.13 2.84.38 2.16-1.45 3.11-1.15 3.11-1.15.62 1.53.24 2.67.12 2.95.72.78 1.16 1.77 1.16 2.99 0 4.3-2.62 5.24-5.11 5.52.36.31.68.92.68 1.86 0 1.34-.01 2.42-.01 2.75 0 .29.2.64.77.53C19.06 20.9 22.25 16.7 22.25 11.77 22.25 5.48 17.27.5 12 .5z"/>
+        <a
+          className="social-link"
+          href="https://github.com/Kayalvizhi2004"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 .5C5.7.5.7 5.5.7 11.8c0 5 3.2 9.2 7.6 10.7.6.1.8-.3.8-.6v-2c-3.1.7-3.8-1.5-3.8-1.5-.5-1.3-1.2-1.6-1.2-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.1 1.7 1.1 1 .2 1.6 1 1.6 1 .9 1.5 2.4 1.1 3 .8.1-.6.4-1.1.7-1.4-2.5-.3-5.1-1.2-5.1-5.6 0-1.2.4-2.2 1.1-3-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 3 1.1a10.5 10.5 0 0 1 5.5 0c2.1-1.4 3-1.1 3-1.1.6 1.5.2 2.6.1 2.9.7.8 1.1 1.8 1.1 3 0 4.4-2.7 5.3-5.2 5.6.4.3.8 1 .8 2v3c0 .3.2.7.8.6 4.4-1.5 7.6-5.7 7.6-10.7C23.3 5.5 18.3.5 12 .5z"/>
           </svg>
         </a>
-        <a className="social-link" href="https://www.linkedin.com/in/kayalvizhi-neelanarayanan-2804at2004/" target="_blank" rel="noreferrer">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 24V7.98h5V24H0zm7.5 0h5V15.5c0-4.42 6-4.77 6 0V24h5V14.5c0-7.72-8.33-7.43-11-3.62V7.98h-5V24z"/>
+
+        <a
+          className="social-link"
+          href="https://www.linkedin.com/in/kayalvizhi-neelanarayanan-2804at2004/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M4.98 3.5C4.98 4.9 3.9 6 2.5 6S0 4.9 0 3.5 1.1 1 2.5 1s2.48 1.1 2.48 2.5zM0 24V7.98h5V24H0zm7.5 0h5v-8.5c0-4.4 6-4.7 6 0V24h5V14.5c0-7.7-8.3-7.4-11-3.6V7.98h-5V24z"/>
           </svg>
         </a>
       </div>

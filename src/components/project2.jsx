@@ -1,5 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { Link } from "react-router-dom";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 export default function Project2() {
   const [mounted, setMounted] = useState(false);
@@ -37,6 +38,10 @@ export default function Project2() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [lightboxOpen]);
+  
+  useEffect(() => {
+  window.scrollTo(0, 0);
+}, []);
 
   function startAutoplay() {
     stopAutoplay();
@@ -70,8 +75,12 @@ export default function Project2() {
     startAutoplay();
   }
 
+  const { theme } = useContext(ThemeContext);
+
+  const mainStyle = { padding: "28px 20px", maxWidth: 1200, margin: "0 auto", background: theme === "dark" ? "#000" : "transparent" };
+
   return (
-    <main style={{ padding: "28px 20px", maxWidth: 1200, margin: "0 auto" }}>
+    <main style={mainStyle}>
       <style>{`
         :root { --accent1:#00f2fe; --accent2:#e00dacff; }
 
@@ -83,7 +92,7 @@ export default function Project2() {
         .grid { display:grid; grid-template-columns: 1fr 420px; gap:26px; align-items:start; }
         @media (max-width:1020px) { .grid { grid-template-columns: 1fr; } }
 
-        .title { font-size:1.6rem; margin:0 0 6px; color:#0b1220; }
+        .title { font-size:2rem; margin:0 0 6px; color:#0b1220; }
         .lead { color:#475569; line-height:1.6; margin:0 0 12px; }
 
         .panel { background:linear-gradient(180deg,#fff,#fbfdff); border-radius:12px; padding:14px; box-shadow:0 14px 36px rgba(12,18,30,0.06); border:1px solid rgba(12,18,30,0.03); }
@@ -94,6 +103,10 @@ export default function Project2() {
         .kpi.visible { transform: translateY(0); opacity:1; }
         .kpi .num { font-weight:800; color:#0b1220; font-size:1.05rem; }
         .kpi .lbl { color:#6b7280; font-size:0.9rem; }
+
+        .wrap.dark .kpi { background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+        .wrap.dark .kpi .num { color: #ffffff !important; font-weight:900; font-size:1.08rem; text-shadow: 0 2px 6px rgba(0,0,0,0.6) !important; }
+        .wrap.dark .kpi .label { color: #cbd5e1 !important; font-weight:600 !important; }
 
         /* carousel */
         .carousel { margin-top:14px; border-radius:10px; overflow:hidden; position:relative; }
@@ -107,11 +120,50 @@ export default function Project2() {
 
         .carousel-controls { position:absolute; right:12px; bottom:12px; display:flex; gap:8px; }
         .ctrl { background: rgba(255,255,255,0.9); border-radius:999px; padding:8px; cursor:pointer; box-shadow:0 8px 18px rgba(8,12,20,0.06); }
+        
+        .wrap.dark .ctrl {
+  background: linear-gradient(180deg, #1a1a1a, #0a0a0a);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.18);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.8);
+}
 
+/* Optional: subtle hover for better visibility */
+.wrap.dark .ctrl:hover {
+  background: linear-gradient(180deg, #222222, #0f0f0f);
+}
         .thumbs { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
         .thumb { width:96px; height:64px; object-fit:cover; border-radius:6px; cursor:pointer; opacity:0.76; border:2px solid transparent; transition: transform 220ms ease, opacity 220ms ease, border-color 220ms ease; }
         .thumb:hover { transform: translateY(-4px); opacity:0.95; }
         .thumb.active { opacity:1; border-color: rgba(0,0,0,0.06); box-shadow:0 10px 26px rgba(0,0,0,0.06); }
+
+        /* Dark mode: full page black background and higher contrast */
+        .wrap.dark { background: #000; color: #eaf6ff; }
+        .wrap.dark .title, .wrap.dark .lead, .wrap.dark .kpi .num, .wrap.dark .chip { color: #eaf6ff; }
+        .wrap.dark .panel { background: linear-gradient(180deg,#070707,#030303); border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 26px 80px rgba(0,0,0,0.7); }
+        .wrap.dark .btn { background: linear-gradient(90deg,#00f2fe,#e00dacff); color: #07101a; box-shadow: 0 12px 36px rgba(0,242,254,0.12); }
+        .wrap.dark .viewport { background: linear-gradient(180deg,#03040a,#071018); }
+        /* Ensure chips, KPI labels and meta text are readable in dark mode */
+        .wrap.dark .chip { background: rgba(255,255,255,0.03); color: #eaf6ff !important; }
+        .wrap.dark .kpi .lbl { color: #cbd5e1 !important; }
+        .wrap.dark .kpi .num { color: #e6fbff !important; }
+        .wrap.dark .meta-list div, .wrap.dark .meta-list .meta-item div div { color: #cbd5e1 !important; }
+
+        /* List items – light mode (no change) */
+li {
+  color: inherit;
+}
+
+/* List items – dark mode */
+.dark li {
+  color: #e5e7eb;              /* light gray */
+}
+
+/* Bullet color fix */
+.dark li::marker {
+  color: #9ca3af;
+}
+
 
         /* right column */
         .right { display:flex; flex-direction:column; gap:12px; }
@@ -122,9 +174,49 @@ export default function Project2() {
         .techs { display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; }
         .chip { padding:6px 8px; border-radius:999px; background:#eef6fb; font-weight:700; color:#0b1220; }
 
-        .features { margin-top:10px; display:grid; gap:10px; }
-        .feature { background:linear-gradient(180deg,#fff,#fbfdff); padding:10px; border-radius:10px; box-shadow:0 10px 28px rgba(8,12,20,0.04); transform: translateY(6px); opacity:0; transition: all 420ms ease; }
+        .features { margin-top:12px; display:grid; gap:20px; }
+        /* Feature cards – LIGHT MODE */
+        .feature {
+            display:flex;
+            gap:10px;
+            align-items:flex-start;
+            background: linear-gradient(180deg,#ffffff,#f8fafc);
+            border-radius:10px;
+            padding:10px;
+            box-shadow: 0 10px 28px rgba(8,12,20,0.06);
+            transform: translateY(6px);
+            opacity:0;
+            transition: all 420ms ease;
+            color: #0b1220; /* dark text */
+        }
+
+/* Feature cards – DARK MODE */
+.wrap.dark .feature {
+  background: linear-gradient(180deg,#070707,#020202);
+  box-shadow: 0 18px 60px rgba(0,0,0,0.75);
+  border: 1px solid rgba(255,255,255,0.06);
+  color: #ffffff; /* white text */
+}
+
+/* Feature title */
+.feature > div:nth-child(2) > div:first-child {
+  color: inherit;
+  font-weight: 800;
+}
+
+/* Feature description */
+.feature > div:nth-child(2) > div:last-child {
+  color: inherit;
+  opacity: 0.85;
+  font-size: 13px;
+}
+
         .feature.visible { transform: translateY(0); opacity:1; }
+        .feature {transition: background 300ms ease, color 300ms ease, box-shadow 300ms ease;}
+
+        .badge { width:36px; height:36px; border-radius:9px; display:grid; place-items:center; font-weight:800; color:#fff; background: linear-gradient(90deg, var(--accent1), var(--accent2)); }
+
+
 
         .cta { margin-top:10px; display:flex; gap:8px; }
         .btn { padding:10px 12px; border-radius:10px; background: linear-gradient(90deg,var(--accent1),var(--accent2)); color:white; font-weight:800; text-decoration:none; }
@@ -143,8 +235,8 @@ export default function Project2() {
         }
       `}</style>
 
-      <div className={`wrap ${mounted ? "mounted" : ""}`}>
-        <Link to="/projects" className="back">← Back to Projects</Link>
+      <div className={`wrap ${mounted ? "mounted" : ""} ${theme === "dark" ? "dark" : ""}`}>
+        <Link to="/" state={{ scrollTo: "projects" }} className="back">← Back to Projects</Link>
 
         <div className="grid">
           <div>
@@ -224,37 +316,50 @@ export default function Project2() {
           <aside className="right">
             <div className="panel">
               <strong style={{ display: "block", marginBottom: 6 }}>Project Summary</strong>
-              <ul className="meta-list">
-                <li className="meta-item"><span className="badge">📂</span><div><strong>Data</strong><div style={{ color: "#6b7280" }}>Election results, candidate CSV, demographics</div></div></li>
-                <li className="meta-item"><span className="badge">🛠️</span><div><strong>Tools</strong><div style={{ color: "#6b7280" }}>Tableau, Mural</div></div></li>
-                <li className="meta-item"><span className="badge">🎯</span><div><strong>Deliverables</strong><div style={{ color: "#6b7280" }}>Interactive dashboards + data notebooks + report</div></div></li>
-              </ul>
 
-              <div className="techs" aria-hidden="true">
+              <div className="techs" aria-hidden="true" style={{ marginTop: 12 }}>
                 <span className="chip">Tableau</span>
                 <span className="chip">Mural</span>
               </div>
 
               <div className="features">
-                <div className={`feature ${mounted ? "visible" : ""}`} style={{ transitionDelay: "120ms" }}>
-                  <div style={{ fontWeight: 800 }}>Interactive filters</div>
-                  <div style={{ color: "#6b7280", fontSize: 13 }}>Users can filter by state, party, margin, and year to explore patterns.</div>
-                </div>
+  <div className={`feature ${mounted ? "visible" : ""}`} style={{ transitionDelay: "120ms" }}>
+    <div className="badge">📂</div>
+    <div>
+      <div style={{ fontWeight: 800 }}>Data</div>
+      <div style={{ fontSize: 13 }}>
+        Election results, candidate CSV files, demographic datasets
+      </div>
+    </div>
+  </div>
 
-                <div className={`feature ${mounted ? "visible" : ""}`} style={{ transitionDelay: "220ms" }}>
-                  <div style={{ fontWeight: 800 }}>Comparative view</div>
-                  <div style={{ color: "#6b7280", fontSize: 13 }}>Side-by-side comparisons of constituencies and party performance.</div>
-                </div>
+  <div className={`feature ${mounted ? "visible" : ""}`} style={{ transitionDelay: "220ms" }}>
+    <div className="badge">🛠️</div>
+    <div>
+      <div style={{ fontWeight: 800 }}>Tools</div>
+      <div style={{ fontSize: 13 }}>
+        Tableau dashboards, Mural for exploratory mapping
+      </div>
+    </div>
+  </div>
 
-                <div className={`feature ${mounted ? "visible" : ""}`} style={{ transitionDelay: "320ms" }}>
-                  <div style={{ fontWeight: 800 }}>Export-ready visuals</div>
-                  <div style={{ color: "#6b7280", fontSize: 13 }}>High-res charts for reports and presentations.</div>
-                </div>
-              </div>
+  <div className={`feature ${mounted ? "visible" : ""}`} style={{ transitionDelay: "320ms" }}>
+    <div className="badge">🎯</div>
+    <div>
+      <div style={{ fontWeight: 800 }}>Deliverables</div>
+      <div style={{ fontSize: 13 }}>
+        Interactive dashboards, analysis notebooks, final report
+      </div>
+    </div>
+  </div>
+</div>
 
               <div className="cta" style={{ marginTop: 12 }}>
-                <a className="btn" href="/political-report.pdf" target="_blank" rel="noreferrer">Download Report</a>
-                <a className="btn" href="/datasets.csv" target="_blank" rel="noreferrer">Download Data</a>
+                <a className="btn" href="https://public.tableau.com/app/profile/kayalvizhi.n3009/viz/Book2_16965212567800/Dashboard1" target="_blank" rel="noopener noreferrer">
+  View Dashboard
+</a>
+
+                <a className="btn" href="/datasets.csv" target="_blank" rel="noreferrer">Download Dataset</a>
               </div>
             </div>
           </aside>

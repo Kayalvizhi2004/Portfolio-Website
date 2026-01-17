@@ -1,28 +1,13 @@
 // src/components/Contact.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import emailjs from "@emailjs/browser";
-import { FiPhone, FiMail, FiMapPin, FiSun, FiMoon } from "react-icons/fi";
+import { FiPhone, FiMail, FiMapPin } from "react-icons/fi";
+import { ThemeContext } from "../contexts/ThemeContext";
 
 function Contact() {
   const form = useRef();
 
-  const getInitialTheme = () => {
-    const saved = localStorage.getItem("theme");
-    if (saved === "light" || saved === "dark") return saved;
-    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
-      return "light";
-    }
-    return "dark";
-  };
-
-  const [theme, setTheme] = useState(getInitialTheme);
-
-  useEffect(() => {
-    localStorage.setItem("theme", theme);
-    document.documentElement.setAttribute("data-theme", theme);
-  }, [theme]);
-
-  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+  const { theme } = useContext(ThemeContext);
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -99,49 +84,19 @@ function Contact() {
 
   return (
     <div
+      id="contact"
       style={{
         ...pageStyles,
         background: theme === "dark" ? "#0b0d10" : "#f6f8fb",
         color: theme === "dark" ? "#e6f7f7" : "#081227",
       }}
     >
-      {/* Theme Toggle */}
-      <button
-        onClick={toggleTheme}
-        aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-        title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
-        style={{
-          position: "fixed",
-          top: 80,
-          right: 18,
-          zIndex: 60,
-          background: "transparent",
-          border: "none",
-          cursor: "pointer",
-          padding: 10,
-          borderRadius: 999,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          color: theme === "dark" ? "#ffd86b" : "#ff7a7a",
-          boxShadow:
-            theme === "dark"
-              ? "0 6px 20px rgba(0,0,0,0.6), inset 0 0 16px rgba(255,215,100,0.06)"
-              : "0 6px 20px rgba(20,30,60,0.08), inset 0 0 12px rgba(255,125,125,0.04)",
-          transition: "transform 180ms, box-shadow 300ms, color 300ms",
-        }}
-      >
-        {theme === "light" ? (
-          <FiSun size={22} style={{ filter: "drop-shadow(0 6px 8px rgba(255,200,80,0.12))" }} />
-        ) : (
-          <FiMoon size={22} style={{ filter: "drop-shadow(0 6px 8px rgba(0,200,255,0.06))" }} />
-        )}
-      </button>
+      {/* Theme is controlled globally from the navbar */}
 
       {/* Title */}
       <h1
         style={{
-          fontSize: 36,
+          fontSize: "2rem",
           margin: "12px 0 26px",
           textAlign: "center",
           letterSpacing: "-0.5px",
@@ -222,7 +177,7 @@ function Contact() {
           </div>
 
           <h3 style={{ margin: "6px 0 4px" }}>Get in Touch</h3>
-          <div style={{ fontSize: 14, opacity: 0.85, marginBottom: 14 }}>I'd love to hear from you — message me below or use the details.</div>
+          <div style={{ fontSize: 14, opacity: 0.85, marginBottom: 14 }}>I'd love to hear from you — message me or use the details.</div>
 
           <div style={{ width: "100%", marginTop: 6 }}>
             <div style={{ display: "flex", gap: 12, alignItems: "center", justifyContent: "center", marginBottom: 12 }}>
