@@ -140,7 +140,7 @@ export default function AboutMe() {
 
 My technical interests include analyzing data to extract meaningful insights, building machine learning models, and developing dynamic web applications. I enjoy working on practical projects that bridge the gap between theoretical concepts and real-world applications, while continuously learning new tools and technologies to stay aligned with the rapidly evolving tech landscape.
 
-I am actively seeking opportunities where I can apply my skills, gain hands-on experience, grow professionally, and contribute to innovative projects that create meaningful real-world impact.h
+I am actively seeking opportunities where I can apply my skills, gain hands-on experience, grow professionally, and contribute to innovative projects that create meaningful real-world impact.
         </motion.p>
 
         {/* EDUCATION */}

@@ -23,21 +23,18 @@ export default function Navbar() {
     e.preventDefault();
 
     if (location.pathname !== "/") {
-      // Navigate to home and pass scroll target
       navigate("/", { state: { scrollTo: id } });
       return;
     }
 
     const el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   return (
-    <header className="navbar dark">
+    <header className="navbar">
       <style>{`
-        /* ===== NAVBAR BASE (DARK ONLY) ===== */
+        /* ===== NAVBAR BASE ===== */
         .navbar {
           position: fixed;
           top: 0;
@@ -51,7 +48,7 @@ export default function Navbar() {
         .navbar-inner {
           max-width: 1200px;
           margin: auto;
-          height: 35px;
+          min-height: 48px; /* ✅ FIX */
           padding: 0 1rem;
           display: flex;
           align-items: center;
@@ -60,7 +57,7 @@ export default function Navbar() {
         }
 
         .navbar-logo {
-          font-size: 1.2rem;
+          font-size: 1.15rem;
           font-weight: 800;
           white-space: nowrap;
           color: #e6eef8;
@@ -72,7 +69,7 @@ export default function Navbar() {
 
         .nav-links {
           display: flex;
-          gap: 1.1rem;
+          gap: 1rem;
           flex: 1;
           justify-content: center;
           overflow-x: auto;
@@ -107,9 +104,11 @@ export default function Navbar() {
           width: 100%;
         }
 
+        /* ===== THEME TOGGLE ===== */
         .theme-toggle {
           width: 38px;
           height: 38px;
+          flex-shrink: 0;
           border-radius: 10px;
           border: none;
           display: grid;
@@ -127,16 +126,28 @@ export default function Navbar() {
           box-shadow: 0 0 12px #00f2fe;
         }
 
+        /* ===== MOBILE FIXES ===== */
         @media (max-width: 768px) {
+          .navbar-inner {
+            min-height: 56px; /* ✅ more tap-safe */
+            padding: 0 0.75rem;
+          }
+
           .nav-links {
             justify-content: flex-start;
-            gap: 0.6rem;
+            gap: 0.5rem;
           }
 
           .nav-links a {
             padding: 6px 12px;
             border-radius: 999px;
             background: rgba(255,255,255,0.12);
+          }
+
+          .theme-toggle {
+            width: 34px;   /* ✅ slightly smaller */
+            height: 34px;
+            border-radius: 8px;
           }
         }
       `}</style>
@@ -161,7 +172,11 @@ export default function Navbar() {
         </nav>
 
         {/* RIGHT */}
-        <button className="theme-toggle" onClick={toggleTheme}>
+        <button
+          className="theme-toggle"
+          onClick={toggleTheme}
+          aria-label="Toggle theme"
+        >
           {isDark ? <FiMoon size={16} /> : <FiSun size={16} />}
         </button>
       </div>
