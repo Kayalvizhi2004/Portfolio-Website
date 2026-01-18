@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { FiSun, FiMoon } from "react-icons/fi";
+import { FiSun, FiMoon, FiMenu, FiX } from "react-icons/fi";
 import { ThemeContext } from "../contexts/ThemeContext";
 
 const sections = [
@@ -15,12 +15,14 @@ const sections = [
 export default function Navbar() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const isDark = theme === "dark";
+  const [open, setOpen] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleScroll = (e, id) => {
     e.preventDefault();
+    setOpen(false); // close menu on click
 
     if (location.pathname !== "/") {
       navigate("/", { state: { scrollTo: id } });
@@ -34,7 +36,6 @@ export default function Navbar() {
   return (
     <header className="navbar">
       <style>{`
-        /* ===== NAVBAR BASE ===== */
         .navbar {
           position: fixed;
           top: 0;
@@ -48,18 +49,16 @@ export default function Navbar() {
         .navbar-inner {
           max-width: 1200px;
           margin: auto;
-          min-height: 48px; /* ✅ FIX */
+          min-height: 56px;
           padding: 0 1rem;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 14px;
         }
 
         .navbar-logo {
           font-size: 1.15rem;
           font-weight: 800;
-          white-space: nowrap;
           color: #e6eef8;
         }
 
@@ -67,87 +66,61 @@ export default function Navbar() {
           color: #00f2fe;
         }
 
+        /* DESKTOP NAV */
         .nav-links {
           display: flex;
           gap: 1rem;
-          flex: 1;
-          justify-content: center;
-          overflow-x: auto;
-          white-space: nowrap;
-          scrollbar-width: none;
-        }
-
-        .nav-links::-webkit-scrollbar {
-          display: none;
         }
 
         .nav-links a {
+          color: #e6eef8;
           text-decoration: none;
           font-weight: 600;
-          color: #e6eef8;
-          cursor: pointer;
-          position: relative;
         }
 
-        .nav-links a::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: -6px;
-          width: 0;
-          height: 2px;
-          background: #00f2fe;
-          transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-          width: 100%;
-        }
-
-        /* ===== THEME TOGGLE ===== */
+        /* THEME TOGGLE */
         .theme-toggle {
           width: 38px;
           height: 38px;
-          flex-shrink: 0;
           border-radius: 10px;
           border: none;
           display: grid;
           place-items: center;
           cursor: pointer;
-          background: ${isDark
-            ? "rgba(255,255,255,0.08)"
-            : "rgba(0,0,0,0.06)"};
+          background: ${isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)"};
           color: ${isDark ? "#f8f9fa" : "#f59e0b"};
-          transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .theme-toggle:hover {
-          transform: rotate(10deg) scale(1.05);
-          box-shadow: 0 0 12px #00f2fe;
+        /* MOBILE */
+        .menu-toggle {
+          display: none;
+          background: none;
+          border: none;
+          color: #fff;
+          font-size: 1.5rem;
+          cursor: pointer;
         }
 
-        /* ===== MOBILE FIXES ===== */
         @media (max-width: 768px) {
-          .navbar-inner {
-            min-height: 56px; /* ✅ more tap-safe */
-            padding: 0 0.75rem;
-          }
-
           .nav-links {
-            justify-content: flex-start;
-            gap: 0.5rem;
+            position: absolute;
+            top: 56px;
+            left: 0;
+            width: 100%;
+            background: ${isDark ? "#0b1220" : "#ffffff"};
+            flex-direction: column;
+            padding: 16px;
+            gap: 14px;
+            display: ${open ? "flex" : "none"};
+            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
           }
 
           .nav-links a {
-            padding: 6px 12px;
-            border-radius: 999px;
-            background: rgba(255,255,255,0.12);
+            color: ${isDark ? "#e6eef8" : "#0b1220"};
           }
 
-          .theme-toggle {
-            width: 34px;   /* ✅ slightly smaller */
-            height: 34px;
-            border-radius: 8px;
+          .menu-toggle {
+            display: block;
           }
         }
       `}</style>
@@ -172,13 +145,15 @@ export default function Navbar() {
         </nav>
 
         {/* RIGHT */}
-        <button
-          className="theme-toggle"
-          onClick={toggleTheme}
-          aria-label="Toggle theme"
-        >
-          {isDark ? <FiMoon size={16} /> : <FiSun size={16} />}
-        </button>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+          <button className="theme-toggle" onClick={toggleTheme}>
+            {isDark ? <FiMoon /> : <FiSun />}
+          </button>
+
+          <button className="menu-toggle" onClick={() => setOpen(!open)}>
+            {open ? <FiX /> : <FiMenu />}
+          </button>
+        </div>
       </div>
     </header>
   );

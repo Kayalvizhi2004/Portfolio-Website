@@ -49,7 +49,10 @@ export default function Projects() {
   }, []);
 
   return (
-    <section className={`projects-root ${theme === "dark" ? "dark" : ""}`} id="projects">
+    <section
+      className={`projects-root ${theme === "dark" ? "dark" : ""}`}
+      id="projects"
+    >
       <style>{`
         :root {
           --bg-light: #f7f9fc;
@@ -66,7 +69,11 @@ export default function Projects() {
           background: var(--bg-light);
           color: var(--text-dark);
         }
-        .dark { background: var(--bg-dark); color: var(--text-light); }
+
+        .dark {
+          background: var(--bg-dark);
+          color: var(--text-light);
+        }
 
         .projects-inner {
           max-width: 1300px;
@@ -80,13 +87,13 @@ export default function Projects() {
           text-shadow: 0 0 14px #00fff7;
         }
 
-        /* RESPONSIVE GRID */
         .grid {
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
           gap: 32px;
         }
 
+        /* CARD FIX */
         .card {
           background: #ffffff;
           border-radius: 14px;
@@ -95,12 +102,14 @@ export default function Projects() {
           opacity: 0;
           transform: translateY(14px);
           transition: all 0.45s ease;
+
           display: flex;
           flex-direction: column;
+         
         }
 
         .dark .card {
-          background: linear-gradient(180deg,#1b1f30,#111520);
+          background: linear-gradient(180deg, #1b1f30, #111520);
         }
 
         .card.visible {
@@ -134,11 +143,14 @@ export default function Projects() {
           color: #475569;
         }
 
-        .dark .desc { color: #cbd5f5; }
+        .dark .desc {
+          color: #cbd5f5;
+        }
 
-        /* FOOTER FIX */
+        /* FOOTER STAYS AT BOTTOM */
         .card-footer {
-          margin-top: 18px;
+          margin-top: auto;
+          padding-top: 18px;
           display: flex;
           flex-wrap: wrap;
           gap: 12px;
@@ -160,11 +172,12 @@ export default function Projects() {
           font-weight: 600;
         }
 
-        .dark .chip { background: rgba(255,255,255,0.1); }
+        .dark .chip {
+          background: rgba(255,255,255,0.1);
+        }
 
         .actions {
           display: flex;
-          width: auto;
         }
 
         .view {
@@ -177,20 +190,29 @@ export default function Projects() {
           border-radius: 10px;
           font-weight: 700;
           color: #fff;
-          background: linear-gradient(90deg,var(--accent),var(--accent2));
+          background: linear-gradient(90deg, var(--accent), var(--accent2));
           text-decoration: none;
         }
 
         /* MOBILE FIX */
         @media (max-width: 600px) {
+          .card {
+            min-height: 460px;
+          }
+
           .card-footer {
             flex-direction: column;
             align-items: stretch;
           }
 
-          .actions,
+          .actions {
+            width: 100%;
+          }
+
           .view {
             width: 100%;
+            height: 48px;
+            font-size: 1rem;
           }
 
           .chips {
@@ -211,7 +233,10 @@ export default function Projects() {
 
         <div className="grid">
           {items.map((p, i) => (
-            <article key={p.id} className={`card ${visibleIdxs.includes(i) ? "visible" : ""}`}>
+            <article
+              key={p.id}
+              className={`card ${visibleIdxs.includes(i) ? "visible" : ""}`}
+            >
               <div className="card-head">
                 <img src={p.img} alt={p.title} className="thumb" />
                 <div>
@@ -223,12 +248,16 @@ export default function Projects() {
               <div className="card-footer">
                 <div className="chips">
                   {p.tech.map((t) => (
-                    <span key={t} className="chip">{t}</span>
+                    <span key={t} className="chip">
+                      {t}
+                    </span>
                   ))}
                 </div>
 
                 <div className="actions">
-                  <Link to={p.route} className="view">View</Link>
+                  <Link to={p.route} className="view">
+                    View
+                  </Link>
                 </div>
               </div>
             </article>
