@@ -18,7 +18,7 @@ function Certifications() {
     { title: "Foudations: Data, Data, Everywhere", issuer: "Coursera", year: "2025", type: "Certificate", img: "/images/cert-12.jpg" },
     { title: "Ask Questions to Make Data-Driven Decisions", issuer: "Coursera", year: "2025", type: "Certificate", img: "/images/cert-13.jpg" },
     { title: "Python", issuer: "Tamilnadu Computer Development Academy", year: "2023", type: "Internship", img: "/images/cert-intern1.jpg" },
-    { title: "Full Stack Web Development", issuer: "Viswa Digital Technology", year: "2025", type: "Internship", img: "/images/cert-intern2.jpg" },
+     { title: "Python Developer", issuer: "Vazhuva Software Solutions", year: "2026", type: "Internship", img: "/images/cert-intern3.jpeg" },
   ];
 
   const [items] = useState(initialItems);
@@ -66,7 +66,7 @@ function Certifications() {
     <div>
       {/* Theme is controlled globally from the navbar */}
 
-      <section id="certifications" ref={containerRef} style={{ padding: "20px 16px", background: "var(--bg)" }}>
+      <section id="certifications" ref={containerRef} style={{ padding: "20px 16px", background: "var(--bg)", width: "100%", minHeight: "auto", height: "auto" }}>
         <style>{`
           :root {
             --bg: #fafbfc;
@@ -116,14 +116,17 @@ function Certifications() {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
             gap: 20px;
+            width: 100%;
           }
 
           .card-3d {
             perspective: 1000px;
+            width: 100%;
           }
 
           .card {
             height: 180px;
+            width: 100%;
             border-radius: 12px;
             background: var(--card-bg);
             padding: 14px;
@@ -228,10 +231,53 @@ function Certifications() {
           }
 
           /* small screens */
+          @media (max-width: 768px) {
+            .wrap {
+              max-width: 100%;
+              padding: 8px;
+            }
+            .grid {
+              grid-template-columns: 1fr !important;
+              gap: 16px;
+              width: 100%;
+            }
+            .card { 
+              height: 200px;
+              width: 100%;
+            }
+            h2.cert-heading { font-size: 1.8rem; }
+          }
+
           @media (max-width: 480px) {
-            .card { height: 160px; }
-            .grid { gap: 15px; }
-            h2.cert-heading { font-size: 2rem; }
+            .wrap {
+              padding: 12px 8px;
+              max-width: 100%;
+              margin: 0;
+            }
+            .grid { 
+              grid-template-columns: 1fr !important;
+              gap: 12px;
+              width: 100%;
+              margin: 0;
+              padding: 0;
+            }
+            .card { 
+              height: 160px;
+              width: 100%;
+              padding: 12px;
+              margin: 0;
+            }
+            h2.cert-heading { 
+              font-size: 1.6rem;
+              margin-bottom: 12px;
+            }
+            .subtitle {
+              font-size: 0.9rem;
+              margin-bottom: 14px;
+            }
+            .card-3d {
+              width: 100%;
+            }
           }
 
           /* Glow keyframes */

@@ -29,11 +29,11 @@ const items = [
   },
   {
     id: "project4",
-    title: "Typing Speed Game for Students",
-    desc: "An interactive exercise where players type text quickly and accurately.",
+    title: "Intelligent Resume Screening & Job Matching System",
+    desc: "AI system that screens resumes and matches candidates to suitable jobs.",
     route: "/project4",
     tech: ["React", "CSS"],
-    img: "/images/logo-4.jpeg",
+    img: "/images/logo-4.png",
   },
 ];
 
@@ -135,6 +135,11 @@ export default function Projects() {
           font-size: 1.15rem;
           font-weight: 800;
           margin: 0 0 6px;
+          color: var(--text-dark);
+        }
+
+        .dark .title {
+          color: var(--text-light);
         }
 
         .desc {
@@ -178,13 +183,17 @@ export default function Projects() {
 
         .actions {
           display: flex;
+          gap: 10px;
+          align-items: center;
+          justify-content: flex-start;
         }
 
         .view {
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          min-width: 120px;
+          width: 140px;
+          min-width: 140px;
           height: 44px;
           padding: 10px 16px;
           border-radius: 10px;
@@ -192,31 +201,90 @@ export default function Projects() {
           color: #fff;
           background: linear-gradient(90deg, var(--accent), var(--accent2));
           text-decoration: none;
+          cursor: pointer;
+          text-align: center;
         }
 
         /* MOBILE FIX */
-        @media (max-width: 600px) {
+        @media (max-width: 900px) {
+          .projects-root {
+            height: auto !important;
+            min-height: auto !important;
+            display: block !important;
+            align-items: stretch !important;
+            padding: 24px 12px 80px;
+            overflow-x: hidden;
+            overflow-y: visible;
+            width: 100%;
+          }
+
+          .projects-inner {
+            padding: 0 6px;
+          }
+
+          h2 {
+            font-size: 1.8rem;
+            margin-bottom: 28px;
+          }
+
+          .grid {
+            gap: 22px;
+            grid-template-columns: 1fr;
+            width: 100%;
+          }
+
           .card {
-            min-height: 460px;
+            min-height: 280px;
+            padding: 16px;
+          }
+
+          .card-head {
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 12px;
+          }
+
+          .thumb {
+            width: 50px;
+            height: 50px;
+          }
+
+          .title {
+            font-size: 1.1rem;
+            margin: 0 0 8px;
+          }
+
+          .desc {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 16px;
           }
 
           .card-footer {
             flex-direction: column;
             align-items: stretch;
+            gap: 16px;
+            margin-top: 0;
+            padding-top: 0;
           }
 
           .actions {
             width: 100%;
+            justify-content: center;
           }
 
           .view {
             width: 100%;
+            max-width: none;
             height: 48px;
             font-size: 1rem;
+            padding: 12px 18px;
+            white-space: nowrap;
+            align-self: center;
           }
 
           .chips {
-            justify-content: center;
+            justify-content: flex-start;
           }
         }
 
@@ -229,7 +297,7 @@ export default function Projects() {
       `}</style>
 
       <div className="projects-inner">
-        <h2>Projects</h2>
+        <h2 id="projects-heading">Projects</h2>
 
         <div className="grid">
           {items.map((p, i) => (

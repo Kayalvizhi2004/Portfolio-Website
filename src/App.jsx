@@ -60,20 +60,20 @@ useEffect(() => {
       <Navbar />
 
       <main style={{ paddingTop: 72 }}>
-        {singlePage ? (
-          <div className="app-container">
-            <Hero />
-            <About />
-            <Skills />
-            <Projects />
-            <Certifications />
-            <Contact />
-          </div>
-        ) : (
-          <Routes>
-            <Route
-              path="/"
-              element={
+        <Routes>
+          <Route
+            path="/"
+            element={
+              singlePage ? (
+                <div className="app-container">
+                  <Hero />
+                  <About />
+                  <Skills />
+                  <Projects />
+                  <Certifications />
+                  <Contact />
+                </div>
+              ) : (
                 <>
                   <Hero />
                   <About />
@@ -82,14 +82,14 @@ useEffect(() => {
                   <Certifications />
                   <Contact />
                 </>
-              }
-            />
-            <Route path="/project1" element={<Project1 />} />
-            <Route path="/project2" element={<Project2 />} />
-            <Route path="/project3" element={<Project3 />} />
-            <Route path="/project4" element={<Project4 />} />
-          </Routes>
-        )}
+              )
+            }
+          />
+          <Route path="/project1" element={<Project1 />} />
+          <Route path="/project2" element={<Project2 />} />
+          <Route path="/project3" element={<Project3 />} />
+          <Route path="/project4" element={<Project4 />} />
+        </Routes>
       </main>
 
       <Footer />

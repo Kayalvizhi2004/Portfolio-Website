@@ -5,9 +5,9 @@ import { ThemeContext } from "../contexts/ThemeContext";
 export default function Project4() {
   const [mounted, setMounted] = useState(false);
   const screenshots = [
-    { src: "/images/typing-1.png", alt: "Typing game main screen" },
-    { src: "/images/typing-2.png", alt: "Typing in progress screenshot" },
-    { src: "/images/typing-3.png", alt: "Result screen showing WPM and accuracy" },
+    { src: "/images/resume-1.png", alt: "Resume screening main screen" },
+    { src: "/images/resume-2.png", alt: "Resume details screenshot" },
+    { src: "/images/resume-3.png", alt: "Matching results screen" },
   ];
   const [index, setIndex] = useState(0);
   const autoplayRef = useRef(null);
@@ -236,23 +236,23 @@ li {
 
         <div className="layout" >
           <div className="left">
-            <h1 className="title">Typing Speed Game</h1>
+            <h1 className="title">Intelligent Resume Screening and Job Matching System</h1>
             <p className="subtitle">
-              A fun, interactive typing game with real-time WPM & accuracy calculation. Includes particle & emoji effects for motivation and smooth animations.
+              An AI-powered solution for automating the resume screening process and matching candidates to suitable job openings.
             </p>
 
             <div className="metrics" aria-hidden="true">
               <div className={`metric ${mounted ? "visible" : ""}`} style={{ transitionDelay: "120ms" }}>
-                <div className="num">WPM</div>
-                <div className="label">Calculated in real-time</div>
+                <div className="num">AI Scoring</div>
+                <div className="label">Smart resume evaluation</div>
               </div>
               <div className={`metric ${mounted ? "visible" : ""}`} style={{ transitionDelay: "220ms" }}>
-                <div className="num">Accuracy</div>
-                <div className="label">Instant feedback on errors</div>
+                <div className="num">Matching</div>
+                <div className="label">Job-fit accuracy analysis</div>
               </div>
               <div className={`metric ${mounted ? "visible" : ""}`} style={{ transitionDelay: "320ms" }}>
-                <div className="num">Fun</div>
-                <div className="label">Particles & emojis on correct words</div>
+                <div className="num">Insights</div>
+                <div className="label">Actionable recommendations</div>
               </div>
             </div>
 
@@ -263,7 +263,7 @@ li {
               ref={carouselRef}
               tabIndex={0}
               aria-roledescription="carousel"
-              aria-label="Typing game screenshots"
+              aria-label="Project screenshots"
             >
               <div className="viewport">
                 {screenshots.map((s, i) => (
@@ -305,12 +305,12 @@ li {
             <div style={{ marginTop: 18 }}>
               <h3 style={{ margin: "6px 0" }}>Game Features</h3>
               <ul style={{ color: "#475569", lineHeight: 1.7 }}>
-                <li>Real-time WPM & accuracy tracking.</li>
-                <li>A fixed time limit is set for the phrases.</li>
-                <li>Number of mistakes will be counted.</li>
-                <li>Interactive particle & emoji effects.</li>
-                <li>Responsive & keyboard-friendly design.</li>
-                <li>Smooth micro-interactions and animations.</li>
+                <li>AI-powered resume screening and ranking.</li>
+                <li>Semantic matching between resumes and job descriptions.</li>
+                <li>ATS score calculation with detailed breakdown.</li>
+                <li>Skill, experience, and education extraction.</li>
+                <li>Resume improvement recommendations.</li>
+                <li>Automated candidate-job matching system.</li>
               </ul>
             </div>
           </div>
@@ -319,43 +319,43 @@ li {
             <div className="panel">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <strong style={{ fontSize: 16 }}>Tech & Tools</strong>
-                <span style={{ color: "#6b7280", fontSize: 13 }}>Frontend · Animation</span>
+                <span style={{ color: "#6b7280", fontSize: 13 }}>Flask · Machine Learning · NLP</span>
               </div>
               <div className="techs" aria-hidden="true" style={{ marginTop: 12 }}>
-                <span className="chip">React</span>
-                <span className="chip">Emojisplosion</span>
-                <span className="chip">tsparticles</span>
-                <span className="chip">CSS Animations</span>
+                <span className="chip">Python</span>
+                <span className="chip">Flask</span>
+                <span className="chip">Machine Learning</span>
+                <span className="chip">NLP</span>
               </div>
 
               <div className="features">
                 <div className={`feature ${mounted ? "visible" : ""}`} style={{ transitionDelay: "120ms" }}>
                   <div className="badge">⚡</div>
                   <div>
-                    <div style={{ fontWeight: 800 }}>Fast & Interactive</div>
-                    <div style={{ color: "#6b7280", fontSize: 13 }}>Smooth typing experience with instant feedback.</div>
+                    <div style={{ fontWeight: 800 }}>Smart Screening</div>
+                    <div style={{ color: "#6b7280", fontSize: 13 }}>Automatically filters and ranks resumes using AI.</div>
                   </div>
                 </div>
 
                 <div className={`feature ${mounted ? "visible" : ""}`} style={{ transitionDelay: "220ms" }}>
                   <div className="badge">🎯</div>
                   <div>
-                    <div style={{ fontWeight: 800 }}>Accuracy</div>
-                    <div style={{ color: "#6b7280", fontSize: 13 }}>Highlights mistakes in real-time.</div>
+                    <div style={{ fontWeight: 800 }}>Accurate Matching</div>
+                    <div style={{ color: "#6b7280", fontSize: 13 }}>Matches candidates with jobs based on skills & experience.</div>
                   </div>
                 </div>
 
                 <div className={`feature ${mounted ? "visible" : ""}`} style={{ transitionDelay: "320ms" }}>
-                  <div className="badge">✨</div>
+                  <div className="badge">📊</div>
                   <div>
-                    <div style={{ fontWeight: 800 }}>Animations</div>
-                    <div style={{ color: "#6b7280", fontSize: 13 }}>Particles & emojis for motivation & fun.</div>
+                    <div style={{ fontWeight: 800 }}>Analytics</div>
+                    <div style={{ color: "#6b7280", fontSize: 13 }}> Provides insights and improvement suggestions.</div>
                   </div>
                 </div>
               </div>
 
               <div className="cta-row">
-                <a className="btn" href="https://github.com/Kayalvizhi2004/Typing-Speed-Game" target="_blank" rel="noreferrer">View Repo</a>
+                <a className="btn" href="https://github.com/Kayalvizhi2004/Intelligent-Resume-Screening-and-Job-Matching" target="_blank" rel="noreferrer">View Repo</a>
               </div>
             </div>
           </aside>

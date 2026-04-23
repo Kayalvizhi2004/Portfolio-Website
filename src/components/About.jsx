@@ -216,6 +216,23 @@ I am actively seeking opportunities where I can apply my skills, gain hands-on e
               architecture, and performance optimization.
             </p>
           </motion.div>
+          <motion.div
+            className="item"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.02 }}
+          >
+            <strong>Software Intern - Python Developer</strong>
+            <div className="meta">2026 | 3 Months</div>
+            <p>
+              Developed scalable backend applications using Python, 
+              focusing on data processing, API development, 
+              and machine learning integration.
+              Worked on building efficient algorithms, 
+              optimizing performance, and implementing intelligent solutions for 
+              real-world problems.
+            </p>
+          </motion.div>
         </div>
       </div>
     </section>
