@@ -99,28 +99,53 @@ export default function Navbar() {
           color: #fff;
           font-size: 1.5rem;
           cursor: pointer;
+          width: 44px;
+          height: 44px;
+          display: grid;
+          place-items: center;
         }
 
         @media (max-width: 768px) {
+          .navbar-inner {
+            padding-right: 0;
+            padding-left: 0;
+            gap: 0.75rem;
+          }
+
           .nav-links {
             position: absolute;
             top: 56px;
             left: 0;
+            right: 0;
             width: 100%;
             background: ${isDark ? "#0b1220" : "#ffffff"};
             flex-direction: column;
             padding: 16px;
             gap: 14px;
             display: ${open ? "flex" : "none"};
-            box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+            z-index: 1001;
+            box-sizing: border-box;
           }
 
           .nav-links a {
             color: ${isDark ? "#e6eef8" : "#0b1220"};
+            padding: 10px 12px;
+            border-radius: 12px;
           }
 
           .menu-toggle {
-            display: block;
+            display: grid;
+          }
+
+          .theme-toggle {
+            min-width: 44px;
+          }
+        }
+
+        @media (max-width: 520px) {
+          .navbar-inner {
+            padding: 0 12px;
           }
         }
       `}</style>
